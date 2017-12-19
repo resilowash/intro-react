@@ -16,17 +16,20 @@ function Square(props) {
         this.state = { 
             squares: Array(9).fill(null),
             xIsNext: true,
+            gameWon: false,
         };  
     
     }
     handleClick(i) {
         //alert("You have clicked the board"); 
-        const squares = this.state.squares.slice();  
-        squares[i] = this.state.xIsNext ? 'X' : 'O';  
-        this.setState({
-            squares: squares,
-            xIsNext: !this.state.xIsNext,
-        }); 
+        if(!this.state.gameWon) {
+         const squares = this.state.squares.slice();  
+         squares[i] = this.state.xIsNext ? 'X' : 'O';  
+            this.setState({
+             squares: squares,
+                xIsNext: !this.state.xIsNext,
+         }); 
+        }
     }
     
     renderSquare(i) {
@@ -37,6 +40,9 @@ function Square(props) {
     render() {
      // const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
      const winner = calculateWinner(this.state.squares);
+     if(winner !== null) {
+        this.state.gameWon = true;  
+     }
      let status;
      if (winner) {
        status = 'Winner: ' + winner;
