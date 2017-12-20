@@ -22,12 +22,12 @@ function Square(props) {
     }
     handleClick(i) {
         //alert("You have clicked the board"); 
-        if(!this.state.gameWon) {
          const squares = this.state.squares.slice();  
+         if(!this.state.gameWon && squares[i] == null) {
          squares[i] = this.state.xIsNext ? 'X' : 'O';  
             this.setState({
              squares: squares,
-                xIsNext: !this.state.xIsNext,
+             xIsNext: !this.state.xIsNext,
          }); 
         }
     }
