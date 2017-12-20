@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+//todo - add a button that becomes clickable to clear the board when game state is done or stalemate 
+//todo - add text fields to allow for name entry for X and name entry for O
+
+
 function Square(props) {
     return (
       <button className="square" onClick={props.onClick}>
@@ -96,6 +100,7 @@ function Square(props) {
     document.getElementById('root')
   );
   
+  //TODO: Determine a way for it to calculate and display "stalemate" when all squares are taken up but nobody has won.
 
   function calculateWinner(squares) {
       const lines = [
