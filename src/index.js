@@ -15,15 +15,7 @@ function Square(props) {
   }
   
   class Board extends React.Component {
-    constructor(props) {
-        super(props); 
-        this.state = { 
-            squares: Array(9).fill(null),
-            xIsNext: true,
-            gameWon: false,
-        };  
-    
-    }
+ 
     handleClick(i) {
         //alert("You have clicked the board"); 
          const squares = this.state.squares.slice();  
@@ -35,28 +27,17 @@ function Square(props) {
          }); 
         }
     }
-    
+
     renderSquare(i) {
-      return ( <Square value={this.state.squares[i]}
-      onClick={() => this.handleClick(i)} />);
+      return ( <Square value={this.props.squares[i]}
+      onClick={() => this.props.onClick(i)} />);
     }
   
     render() {
      // const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-     const winner = calculateWinner(this.state.squares);
-     if(winner !== null) {
-        this.state.gameWon = true;  
-     }
-     let status;
-     if (winner) {
-       status = 'Winner: ' + winner;
-     } else {
-       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-     }
   
       return (
         <div>
-          <div className="status">{status}</div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -78,19 +59,62 @@ function Square(props) {
   }
   
   class Game extends React.Component {
+    constructor(props) {
+        super(props);  
+        this.state = {
+             history: [{
+            squares: Array(9).fill(null),
+            }],
+        xIsNext: true,
+        gameWon: false,
+        };
+    }
     render() {
+        const history = this.state.history;  
+        const current = history[history.length-1];  
+        const winner = calculateWinner(current.squares);
+
+        let status;
+        if(winner !== null) {
+           this.state.gameWon = true;  
+        }
+        if (winner) {
+          status = 'Winner: ' + winner;
+        } else {
+          status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
       return (
         <div className="game">
           <div className="game-board">
-            <Board />
+            <Board 
+                squares={current.squares}
+                onClick={(i) => this.handleClick()} 
+            />
           </div>
           <div className="game-info">
-            <div>{/* status */}</div>
+            <div>{status}</div>
             <ol>{/* TODO */}</ol>
           </div>
         </div>
       );
     }
+    handleClick(i) {
+        //alert("You have clicked the board"); 
+         const history = this.state.history; 
+         const current = history[history.length -1]; 
+         const squares = current.squares.slice();
+
+         if(!this.state.gameWon && squares[i] == null) {
+         squares[i] = this.state.xIsNext ? 'X' : 'O';  
+         this.setState({
+             history: history.concat([{
+                 squares: squares
+             }]),
+             xIsNext: !this.state.xIsNext,
+         }); 
+        }
+    }
+
   }
   
   // ========================================
