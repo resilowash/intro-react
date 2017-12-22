@@ -68,15 +68,7 @@ function Square(props) {
         const squares = current.squares.slice(); 
 
         let status;
-        if(winner !== null) {
-           this.setState({
-              history: history.concat([{
-                squares: squares
-              }]),
-              gameWon: true,
-              xIsNext: this.state.xIsNext
-           });
-        }
+
         if (winner) {
           status = 'Winner: ' + winner;
         } else {
@@ -108,12 +100,13 @@ function Square(props) {
           //alert('registering click ' + this.state.xIsNext ? 'X' : 'O'); 
           console.log('registering click ', this.state.xIsNext ? 'X' : 'O', ' \r\n in square ' , i );
           squares[i] = this.state.xIsNext ? 'X' : 'O';  
+          let gameWon = calculateWinner(squares);  
           this.setState({
              history: history.concat([{
                  squares: squares
              }]),
              xIsNext: !this.state.xIsNext,
-             gameWon: calculateWinner(squares),
+             gameWon: gameWon
          }); 
         }
     }
@@ -146,8 +139,9 @@ function Square(props) {
       for(let i=0; i < lines.length; i++) {
           const [a, b, c] = lines[i];
           if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-              return squares[a]; 
+              //return squares[a]; 
+              return true; 
           }
       }
-      return null; 
+      return false;
   }
