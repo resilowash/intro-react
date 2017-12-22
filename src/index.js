@@ -16,21 +16,13 @@ function Square(props) {
   
   class Board extends React.Component {
  
-    handleClick(i) {
-        //alert("You have clicked the board"); 
-         const squares = this.state.squares.slice();  
-         if(!this.state.gameWon && squares[i] == null) {
-         squares[i] = this.state.xIsNext ? 'X' : 'O';  
-            this.setState({
-             squares: squares,
-             xIsNext: !this.state.xIsNext,
-         }); 
-        }
-    }
-
     renderSquare(i) {
-      return ( <Square value={this.props.squares[i]}
-      onClick={() => this.props.onClick(i)} />);
+      return ( 
+        <Square 
+          value={this.props.squares[i]}
+          onClick={() => this.props.onClick(i)} 
+        />
+      );
     }
   
     render() {
@@ -66,7 +58,7 @@ function Square(props) {
             squares: Array(9).fill(null),
             }],
         xIsNext: true,
-        gameWon: false,
+        gameWon: false
         };
     }
     render() {
@@ -95,7 +87,7 @@ function Square(props) {
           <div className="game-board">
             <Board 
                 squares={current.squares}
-                onClick={(i) => this.handleClick()} 
+                onClick={(i) => this.handleClick(i)} 
             />
           </div>
           <div className="game-info">
@@ -110,10 +102,11 @@ function Square(props) {
          const history = this.state.history; 
          const current = history[history.length -1]; 
          const squares = current.squares.slice();
-
+         
+         //if the game has not been won and the square is null allow for continued play.
          if(!this.state.gameWon && squares[i] == null) {
           //alert('registering click ' + this.state.xIsNext ? 'X' : 'O'); 
-          console.log('registering click ', this.state.xIsNext ? 'X' : 'O' );
+          console.log('registering click ', this.state.xIsNext ? 'X' : 'O', ' \r\n in square ' , i );
           squares[i] = this.state.xIsNext ? 'X' : 'O';  
           this.setState({
              history: history.concat([{
